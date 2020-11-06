@@ -1,0 +1,24 @@
+version: "2.0"
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: test
+    volumes:
+      - ./.db_init:/docker-entrypoint-initdb.d
+  filler:
+    build: filler
+    volumes:
+      - "./data:/var/filler"
+    restart: "no"
+  web:
+    build: web
+    restart: always
+    ports:
+      - 4580:4580
